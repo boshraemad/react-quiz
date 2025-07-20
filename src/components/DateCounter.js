@@ -1,33 +1,45 @@
-import { useState } from "react";
+import { useState , useReducer } from "react";
 
+
+function reducer(state , action){
+    if (action.type === "inc") return state + 1;
+    if (action.type === "dec") return state -1;
+    if(action.type === "setCountValue") return action.payload;
+}
 function DateCounter() {
-  const [count, setCount] = useState(0);
-  const [step, setStep] = useState(1);
+// the useReducer hook takes two parameters => ( reducer function , initial state value)
 
+const [count , dispatch]=useReducer(reducer , 0)
+  const [step, setStep] = useState(1);
   // This mutates the date object.
   const date = new Date("june 21 2027");
   date.setDate(date.getDate() + count);
 
   const dec = function () {
+
+    dispatch({type:"dec"});
     // setCount((count) => count - 1);
-    setCount((count) => count - step);
+    // setCount((count) => count - step);
   };
 
   const inc = function () {
+    dispatch({type:"inc"});
     // setCount((count) => count + 1);
-    setCount((count) => count + step);
+    // setCount((count) => count + step);
   };
 
   const defineCount = function (e) {
-    setCount(Number(e.target.value));
+    dispatch({type:"setCountValue" , payload:Number(e.target.value)})
+    // setCount(Number(e.target.value));
   };
 
   const defineStep = function (e) {
     setStep(Number(e.target.value));
+    console.log(step)
   };
 
   const reset = function () {
-    setCount(0);
+    // setCount(0);
     setStep(1);
   };
 
