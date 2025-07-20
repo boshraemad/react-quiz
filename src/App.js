@@ -4,10 +4,11 @@ import {useEffect , useReducer} from 'react';
 import Loader from "./components/Loader";
 import Error from "./components/Error"
 import StartScreen from "./components/StartScreen";
+import Questions from "./components/Questions";
 
 const initialState={
   questions:[],
-  //loading ready error finished
+  //loading ready error active finished
   status:"loading"
 }
 
@@ -15,6 +16,7 @@ function reducer(state , action){
   switch(action.type){
     case "fetchQuestions": return {...state , questions:action.payload , status:"ready"}
     case "failedToFetch" :return {...state , status:"error"}
+    case "start":return {...state , status:"active"}
     default:
       throw new Error("unKnown Action");
   }
@@ -44,7 +46,8 @@ function App() {
       <Main>
         { status === "loading" && <Loader/>}
         {status === "error" && <Error/>}
-        {status === "ready" && <StartScreen questionsNumber={questionsNumber}/>}
+        {status === "ready" && <StartScreen questionsNumber={questionsNumber} dispatch={dispatch}/>}
+        {status === "active" && <Questions/>}
 
       </Main>
     </div>
