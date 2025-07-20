@@ -1,24 +1,28 @@
 import Header from "./components/Header";
 import Main from "./components/Main";
 import {useEffect , useReducer} from 'react';
+import Loader from "./components/Loader";
+import Error from "./components/Error"
+import StartScreen from "./components/StartScreen";
 
 const initialState={
   questions:[],
   //loading ready error finished
-  state:""
+  status:"loading"
 }
 
 function reducer(state , action){
   switch(action.type){
-    case "fetchQuestions": return {...state , questions:action.payload , state:"ready"}
-    case "failedToFetch" :return {...state , state:"error"}
+    case "fetchQuestions": return {...state , questions:action.payload , status:"ready"}
+    case "failedToFetch" :return {...state , status:"error"}
     default:
       throw new Error("unKnown Action");
   }
 }
 function App() {
 
-  const [state , dispatch]=useReducer(reducer , initialState);
+  const [{questions , status} , dispatch]=useReducer(reducer , initialState);
+  const questionsNumber=questions.length; 
 
   useEffect(()=>{
    const fetchQuestions=async()=>{
@@ -38,8 +42,10 @@ function App() {
     <div className="App">
       <Header/>
       <Main>
-        <p>1/15 </p>
-        <p>Questions</p>
+        { status === "loading" && <Loader/>}
+        {status === "error" && <Error/>}
+        {status === "ready" && <StartScreen questionsNumber={questionsNumber}/>}
+
       </Main>
     </div>
   );
