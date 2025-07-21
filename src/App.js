@@ -11,7 +11,8 @@ const initialState={
   //loading ready error active finished
   status:"loading",
   index:0,
-  answer:null
+  answer:null, 
+  points:0
 }
 
 function reducer(state , action){
@@ -19,9 +20,12 @@ function reducer(state , action){
     case "fetchQuestions": return {...state , questions:action.payload , status:"ready"}
     case "failedToFetch" :return {...state , status:"error"}
     case "start":return {...state , status:"active"}
-    case "newAnswer": return {
+    case "newAnswer":
+      const  question = state.questions.at(state.index);
+       return {
       ...state,
-      answer:action.payload
+      answer:action.payload,
+      points: question.correctOption === action.payload ? state.points + question.points : state.points
     }
     default:
       throw new Error("unKnown Action");
@@ -29,7 +33,7 @@ function reducer(state , action){
 }
 function App() {
 
-  const [{questions , status , index , answer} , dispatch]=useReducer(reducer , initialState);
+  const [{questions , status , index , answer , points} , dispatch]=useReducer(reducer , initialState);
   const questionsNumber=questions.length; 
 
   useEffect(()=>{
