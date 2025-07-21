@@ -6,7 +6,7 @@ export default function Options({question , dispatch , answer}) {
   return (
    <>
     {question.options.map((option , index)=>
-    <div className="options">
+    <div className="options" key={option}>
     <button disabled={inAnswered} className={`btn btn-option ${ index === answer ? "answer" : ""} ${ inAnswered ? question.correctOption === index ? "correct" : "wrong" : ""}`} onClick={()=>{dispatch({type:"newAnswer" , payload:index})}}>{option}</button>
     </div>)}
    </>
