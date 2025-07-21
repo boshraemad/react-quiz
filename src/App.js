@@ -32,6 +32,7 @@ function reducer(state , action){
     }
     case "nextQuestion": return {...state , answer:null , index:state.index + 1}
     case "finishQuiz" : return {...state , status:"finished"}
+    case "restartQuiz" : return {...initialState , status:"ready" , questions:state.questions}
     default:
       throw new Error("unKnown Action");
   }
@@ -71,7 +72,7 @@ function App() {
           <Questions question={questions[index]} dispatch={dispatch} answer={answer}/>
           <NextButton dispatch={dispatch} answer={answer} index={index} questionsNumber={questionsNumber}/>
           </>}
-          {status === "finished" && <FinishScreen points={points} maxPoints={maxPossiblePoints}/>}
+          {status === "finished" && <FinishScreen points={points} maxPoints={maxPossiblePoints} dispatch={dispatch}/>}
       </Main>
     </div>
   );
