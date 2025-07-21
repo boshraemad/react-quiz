@@ -9,7 +9,8 @@ import Questions from "./components/Questions";
 const initialState={
   questions:[],
   //loading ready error active finished
-  status:"loading"
+  status:"loading",
+  index:0
 }
 
 function reducer(state , action){
@@ -23,7 +24,7 @@ function reducer(state , action){
 }
 function App() {
 
-  const [{questions , status} , dispatch]=useReducer(reducer , initialState);
+  const [{questions , status , index} , dispatch]=useReducer(reducer , initialState);
   const questionsNumber=questions.length; 
 
   useEffect(()=>{
@@ -41,14 +42,13 @@ function App() {
   },[])
 
   return (
-    <div className="App">
+    <div className="app">
       <Header/>
       <Main>
         { status === "loading" && <Loader/>}
         {status === "error" && <Error/>}
         {status === "ready" && <StartScreen questionsNumber={questionsNumber} dispatch={dispatch}/>}
-        {status === "active" && <Questions/>}
-
+        {status === "active" && <Questions question={questions[index]}/>}
       </Main>
     </div>
   );

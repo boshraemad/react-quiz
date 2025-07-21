@@ -1,7 +1,12 @@
 import React from 'react'
+import Options from './Options'
 
-export default function Questions() {
+export default function Questions({question}) {
+
   return (
-    <div>Questions</div>
+    <div className="questions">
+        <h4>{question.question}</h4>
+       <Options question={question}/>
+    </div>
   )
 }
